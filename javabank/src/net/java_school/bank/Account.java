@@ -8,7 +8,7 @@ public class Account {
 	private String accountNo;
 	private String name;
 	private double balance;
-	private List<Transaction> transactions = new ArrayList<Transaction>();
+	private ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 	static final String DEPOSIT = "deposit";
 	static final String WITHDRAW = "withdraw";
 	
@@ -50,10 +50,11 @@ public class Account {
 		this.balance = balance;
 	}
 
-	public void printTransactions() {
+	public ArrayList<Transaction> getTransactions() {
 		for(Transaction trans : transactions) {
 			System.out.println(trans);
 		}
+		return transactions;
 	}
 	
 	public void deposit(double amount) {

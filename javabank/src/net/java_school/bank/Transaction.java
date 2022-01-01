@@ -1,25 +1,20 @@
 package net.java_school.bank;
 
 import java.math.*;
+import java.text.DecimalFormat;
 
 public class Transaction {
 	
 	private String transactionDate;
 	private String transactionTime;
-	private BigDecimal amount;
-	private BigDecimal balance;
+	private double amount;
 	private String transactionType;
 	
-	public Transaction() {
-		super();
-	}
-	
-	public Transaction(String transactionDate, String transactionTime, BigDecimal amount, BigDecimal balance, String transactionType) {
+	public Transaction(String transactionDate, String transactionTime, double amount, String transactionType) {
 		super();
 		this.transactionDate = transactionDate;
 		this.transactionTime = transactionTime;	
 		this.amount = amount;
-		this.balance = balance;
 		this.transactionType = transactionType;
 	}
 	
@@ -39,11 +34,11 @@ public class Transaction {
 		this.transactionTime = transactionTime;
 	}
 	
-	public BigDecimal getAmount() {
+	public double getAmount() {
 		return amount;
 	}
 	
-	public void setAmount(BigDecimal amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 	
@@ -57,6 +52,7 @@ public class Transaction {
 	
 	@Override
 	public String toString() {
+		DecimalFormat df = new DecimalFormat("0.00");
 		StringBuilder s = new StringBuilder();
 		s.append(transactionDate);
 		s.append(" | ");
@@ -64,9 +60,8 @@ public class Transaction {
 		s.append(" | ");
 		s.append(transactionType);
 		s.append(" | ");
-		s.append(amount.setScale(2, RoundingMode.FLOOR));
+		s.append(df.format(amount));
 		s.append(" | ");
-		s.append(balance.setScale(2, RoundingMode.FLOOR));
 		
 		return s.toString();
 	}

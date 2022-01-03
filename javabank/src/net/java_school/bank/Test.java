@@ -9,7 +9,7 @@ import java.text.NumberFormat;
 public class Test {
 
 	public static void main(String[] args) {
-		Bank myBank = new Bank();
+		MyBank myBank = new MyBank();
 		myBank.addAccount("0001", "one", "+");
 		try {
 			myBank.addAccount("0001", "oneone", "+");

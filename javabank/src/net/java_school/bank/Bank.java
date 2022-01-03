@@ -13,8 +13,14 @@ public class Bank {
 	}
 	
 	public void addAccount(String accountNo, String name) {
-		Account newAccount = new Account(accountNo, name);
-		accounts.put(accountNo, newAccount);
+		if(accounts.get(accountNo) != null) {
+			System.out.println(accountNo + " already exists in the system");
+		}
+		else {
+			Account newAccount = new Account(accountNo, name);
+			accounts.put(accountNo, newAccount);
+			totalAccount += 1;
+		}
 	}
 	
 	public Account getAccount(String accountNo) {
@@ -26,15 +32,9 @@ public class Bank {
 		for(Map.Entry<String, Account> entry : accounts.entrySet()) {
 			Account account = entry.getValue();
 			if(account.getName() == name) {
-				System.out.println(account);
 				match.add(account);
 			}
 		}
 		return match;
 	}
-	
-	
-	
-	
-	
 }

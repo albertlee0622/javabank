@@ -51,9 +51,6 @@ public class Account {
 	}
 
 	public ArrayList<Transaction> getTransactions() {
-		for(Transaction trans : transactions) {
-			System.out.println(trans);
-		}
 		return transactions;
 	}
 	

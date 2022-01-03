@@ -8,26 +8,25 @@ import java.util.*;
 public class Test {
 
 	public static void main(String[] args) {
-		Account myAccount = new Account("00001", "Albert");
-		System.out.println(myAccount);
-		myAccount.deposit(100);
-		System.out.println(myAccount);
-		myAccount.withdraw(85);
-		System.out.println(myAccount);
-		ArrayList<Transaction> transactions = myAccount.getTransactions();
-		System.out.println(transactions.size());
-//		HashMap<String, Account> accounts = new HashMap<String, Account>();
-//		ArrayList<Account> accts = new ArrayList<Account>();
-//		System.out.println(accts.size());
-//		accounts.put("0001", new Account("0001", "one"));
-//		accounts.put("0002", new Account("0002", "two"));
-//		accounts.put("0003", new Account("0003", "three"));
+		Bank myBank = new Bank();
+		myBank.addAccount("0001", "one");
+		myBank.addAccount("0001", "one-1");
+		myBank.addAccount("0011", "one");
+		myBank.addAccount("0002", "two");
+		myBank.addAccount("0003", "three");
 		
-//		for(Map.Entry<String, Account> entry : accounts.entrySet()) {
-//			String key = entry.getKey();
-//			Account value = entry.getValue();
-//			System.out.println(value);
-//		}
+		ArrayList<Account> accounts = myBank.findAccounts("one");
+		for(Account acct : accounts) {
+			System.out.println(acct);
+		}
+		
+		Account two = myBank.getAccount("0002");
+		two.deposit(222.22);
+		two.withdraw(22.22);
+		ArrayList<Transaction> twoTransactions = two.getTransactions();
+		for(Transaction trans : twoTransactions) {
+			System.out.println(trans);
+		}
 	}
 
 }

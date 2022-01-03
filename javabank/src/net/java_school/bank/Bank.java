@@ -14,7 +14,7 @@ public class Bank {
 	
 	public void addAccount(String accountNo, String name, String type) {
 		if(accounts.get(accountNo) != null) {
-			System.out.println(accountNo + " already exists in the system");
+			throw new DuplicateAccountException(accountNo + " already exists in the system");
 		}
 		else {
 			Account newAccount;
@@ -22,13 +22,30 @@ public class Bank {
 				newAccount = new MinusAccount(accountNo, name);
 			}
 			else {
-			newAccount = new Account(accountNo, name);
+			newAccount = new RegularAccount(accountNo, name);
 			}
 			accounts.put(accountNo, newAccount);
 			totalAccount += 1;
 		}
 	}
 	
+	public void addAccount(String accountNo, String name, double balance, String type) {
+		if(accounts.get(accountNo) != null) {
+			throw new DuplicateAccountException(accountNo + " already exists in the system");
+		}
+		else {
+			Account newAccount;
+			if(type.equals("-")) {
+				newAccount = new MinusAccount(accountNo, name, balance);
+			}
+			else {
+			newAccount = new RegularAccount(accountNo, name, balance);
+			}
+			accounts.put(accountNo, newAccount);
+			totalAccount += 1;
+		}
+	}
+
 	public Account getAccount(String accountNo) {
 		return accounts.get(accountNo);
 	}
@@ -43,4 +60,13 @@ public class Bank {
 		}
 		return match;
 	}
+	
+	public HashMap<String, Account> getAccounts() {
+		return accounts;
+	}
+
+	public int getTotalAccount() {
+		return totalAccount;
+	}
+	
 }

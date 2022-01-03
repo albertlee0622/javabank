@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.text.NumberFormat;
 
-public class Account {
+public abstract class Account {
 	protected String accountNo;
 	protected String name;
 	protected double balance;
@@ -64,25 +64,15 @@ public class Account {
 		addTransaction(amount, DEPOSIT);
 	}
 	
-	public void withdraw(double amount) {
-		if(amount <= balance) {
-			balance = balance - amount;
-			addTransaction(amount, WITHDRAW);
-		}
-		else {
-			throw new InsufficientBalanceException(String.format("Your account balance is less than %s", NUMBER_FORMAT.format(amount)));
-		}
-	}
+	public abstract void withdraw(double amount);
 	
-	private void addTransaction(double amount, String transactionType) {
+	protected void addTransaction(double amount, String transactionType) {
 		LocalDateTime dateTime = LocalDateTime.now();
 		Transaction newTrans = new Transaction(DATE_FORMAT.format(dateTime), TIME_FORMAT.format(dateTime), amount, transactionType);
 		transactions.add(newTrans);
 	}
 	
-	public String getKind() {
-		return KIND;
-	}
+	public abstract String getKind();
 	
 	@Override
 	public String toString() {

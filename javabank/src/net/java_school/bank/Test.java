@@ -11,6 +11,12 @@ public class Test {
 	public static void main(String[] args) {
 		Bank myBank = new Bank();
 		myBank.addAccount("0001", "one", "+");
+		try {
+			myBank.addAccount("0001", "oneone", "+");
+		}
+		catch (DuplicateAccountException de) {
+			System.out.println(de.getMessage());
+		}
 		myBank.addAccount("0011", "one", "-");
 		myBank.addAccount("0002", "two", "+");
 		myBank.addAccount("0003", "three", "+");
@@ -20,7 +26,7 @@ public class Test {
 			System.out.println(acct);
 		}
 		
-		Account one = myBank.getAccount("0001");
+		Account one = myBank.getAccount("0011");
 		one.deposit(11111.1111);
 		try {
 			one.withdraw(111111111.333333333);
@@ -32,7 +38,8 @@ public class Test {
 		for(Transaction trans : oneTransactions) {
 			System.out.println(trans);
 		}
-		System.out.println(one);
+//		System.out.println(one);
+		
 //		MinusAccount mAccount = new MinusAccount("0001", "one");
 //		mAccount.withdraw(1230.0);
 		

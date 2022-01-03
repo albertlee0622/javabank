@@ -20,9 +20,14 @@ public class Test {
 			System.out.println(acct);
 		}
 		
-		Account one = myBank.getAccount("0011");
+		Account one = myBank.getAccount("0001");
 		one.deposit(11111.1111);
-		one.withdraw(111111111.333333333);
+		try {
+			one.withdraw(111111111.333333333);
+		}
+		catch (InsufficientBalanceException ie) {
+			System.out.println(ie.getMessage());
+		}
 		ArrayList<Transaction> oneTransactions = one.getTransactions();
 		for(Transaction trans : oneTransactions) {
 			System.out.println(trans);

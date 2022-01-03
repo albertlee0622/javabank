@@ -70,7 +70,7 @@ public class Account {
 			addTransaction(amount, WITHDRAW);
 		}
 		else {
-			System.out.println(String.format("Your account balance is less than %.2f", amount));
+			throw new InsufficientBalanceException(String.format("Your account balance is less than %s", NUMBER_FORMAT.format(amount)));
 		}
 	}
 	
@@ -78,6 +78,10 @@ public class Account {
 		LocalDateTime dateTime = LocalDateTime.now();
 		Transaction newTrans = new Transaction(DATE_FORMAT.format(dateTime), TIME_FORMAT.format(dateTime), amount, transactionType);
 		transactions.add(newTrans);
+	}
+	
+	public String getKind() {
+		return KIND;
 	}
 	
 	@Override
@@ -89,7 +93,7 @@ public class Account {
 		s.append(" | ");
 		s.append(NUMBER_FORMAT.format(balance));
 		s.append(" | ");
-		s.append(KIND);
+		s.append(getKind());
 		
 		return s.toString();
 	}

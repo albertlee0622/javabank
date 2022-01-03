@@ -12,12 +12,18 @@ public class Bank {
 		totalAccount = 0;
 	}
 	
-	public void addAccount(String accountNo, String name) {
+	public void addAccount(String accountNo, String name, String type) {
 		if(accounts.get(accountNo) != null) {
 			System.out.println(accountNo + " already exists in the system");
 		}
 		else {
-			Account newAccount = new Account(accountNo, name);
+			Account newAccount;
+			if(type.equals("-")) {
+				newAccount = new MinusAccount(accountNo, name);
+			}
+			else {
+			newAccount = new Account(accountNo, name);
+			}
 			accounts.put(accountNo, newAccount);
 			totalAccount += 1;
 		}

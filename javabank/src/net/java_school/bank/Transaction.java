@@ -1,7 +1,6 @@
 package net.java_school.bank;
 
-import java.math.*;
-import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 public class Transaction {
 	
@@ -9,6 +8,7 @@ public class Transaction {
 	private String transactionTime;
 	private double amount;
 	private String transactionType;
+	static final NumberFormat NUMBER_FORMAT = NumberFormat.getNumberInstance();
 	
 	public Transaction(String transactionDate, String transactionTime, double amount, String transactionType) {
 		super();
@@ -52,7 +52,6 @@ public class Transaction {
 	
 	@Override
 	public String toString() {
-		DecimalFormat df = new DecimalFormat("0.00");
 		StringBuilder s = new StringBuilder();
 		s.append(transactionDate);
 		s.append(" | ");
@@ -60,7 +59,7 @@ public class Transaction {
 		s.append(" | ");
 		s.append(transactionType);
 		s.append(" | ");
-		s.append(df.format(amount));
+		s.append(NUMBER_FORMAT.format(amount));
 		s.append(" | ");
 		
 		return s.toString();

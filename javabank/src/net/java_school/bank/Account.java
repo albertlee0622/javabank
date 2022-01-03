@@ -3,14 +3,19 @@ package net.java_school.bank;
 import java.util.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.text.NumberFormat;
 
 public class Account {
-	private String accountNo;
-	private String name;
-	private double balance;
-	private ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+	protected String accountNo;
+	protected String name;
+	protected double balance;
+	protected ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 	static final String DEPOSIT = "deposit";
 	static final String WITHDRAW = "withdraw";
+	static final NumberFormat NUMBER_FORMAT = NumberFormat.getNumberInstance();
+	static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm:ss");
+	static final String KIND = "regular";
 	
 	public Account(String accountNo, String name) {
 		super();
@@ -64,15 +69,14 @@ public class Account {
 			balance = balance - amount;
 			addTransaction(amount, WITHDRAW);
 		}
+		else {
+			System.out.println(String.format("Your account balance is less than %.2f", amount));
+		}
 	}
 	
 	private void addTransaction(double amount, String transactionType) {
 		LocalDateTime dateTime = LocalDateTime.now();
-		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
-		String date = dateFormat.format(dateTime);
-		String time = timeFormat.format(dateTime);
-		Transaction newTrans = new Transaction(date, time, amount, transactionType);
+		Transaction newTrans = new Transaction(DATE_FORMAT.format(dateTime), TIME_FORMAT.format(dateTime), amount, transactionType);
 		transactions.add(newTrans);
 	}
 	
@@ -83,7 +87,9 @@ public class Account {
 		s.append(" | ");
 		s.append(name);
 		s.append(" | ");
-		s.append(balance);
+		s.append(NUMBER_FORMAT.format(balance));
+		s.append(" | ");
+		s.append(KIND);
 		
 		return s.toString();
 	}

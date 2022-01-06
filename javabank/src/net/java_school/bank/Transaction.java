@@ -10,6 +10,12 @@ public class Transaction {
 	private String transactionType;
 	static final NumberFormat NUMBER_FORMAT = NumberFormat.getNumberInstance();
 	
+	
+	
+	public Transaction() {
+		super();
+	}
+
 	public Transaction(String transactionDate, String transactionTime, double amount, String transactionType) {
 		super();
 		this.transactionDate = transactionDate;

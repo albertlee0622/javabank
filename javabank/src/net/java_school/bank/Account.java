@@ -15,7 +15,6 @@ public abstract class Account {
 	static final NumberFormat NUMBER_FORMAT = NumberFormat.getNumberInstance();
 	static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm:ss");
-	static final String KIND = "regular";
 	
 	public Account(String accountNo, String name) {
 		super();
@@ -68,7 +67,11 @@ public abstract class Account {
 	
 	protected void addTransaction(double amount, String transactionType) {
 		LocalDateTime dateTime = LocalDateTime.now();
-		Transaction newTrans = new Transaction(DATE_FORMAT.format(dateTime), TIME_FORMAT.format(dateTime), amount, transactionType);
+		Transaction newTrans = new Transaction();
+		newTrans.setTransactionDate(DATE_FORMAT.format(dateTime));
+		newTrans.setTransactionTime(TIME_FORMAT.format(dateTime));
+		newTrans.setAmount(amount);
+		newTrans.setTransactionType(transactionType);
 		transactions.add(newTrans);
 	}
 	

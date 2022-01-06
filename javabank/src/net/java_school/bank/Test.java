@@ -1,51 +1,51 @@
 package net.java_school.bank;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.text.NumberFormat;
+//import java.time.LocalDateTime;
+//import java.time.format.DateTimeFormatter;
+//import java.util.*;
+//import java.text.NumberFormat;
 
-public class Test {
+public class Test extends Thread {
+	private Bank bank;
+	private Account account;
+	
+	public Test() {
+		super();
+		bank = new MyBank();
+		bank.addAccount("101", "albert", RegularAccount.KIND);
+		account = bank.getAccount("101");
+		account.deposit(1000);
+	}
+	
+	public void withdrawTest() {
+		int i = 0;
+		do {
+			i++;
+			try {
+				account.withdraw(100);
+			}
+			catch (InsufficientBalanceException e) {
+			}
+			
+			try {
+				Thread.sleep(10);
+			}
+			catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		} while(i < 100);
+	}
+	
+	public void run() {
+		withdrawTest();
+	}
 
 	public static void main(String[] args) {
-		MyBank myBank = new MyBank();
-		myBank.addAccount("0001", "one", "+");
-		try {
-			myBank.addAccount("0001", "oneone", "+");
-		}
-		catch (DuplicateAccountException de) {
-			System.out.println(de.getMessage());
-		}
-		myBank.addAccount("0011", "one", "-");
-		myBank.addAccount("0002", "two", "+");
-		myBank.addAccount("0003", "three", "+");
-		
-		ArrayList<Account> accounts = myBank.findAccounts("one");
-		for(Account acct : accounts) {
-			System.out.println(acct);
-		}
-		
-		Account one = myBank.getAccount("0011");
-		one.deposit(11111.1111);
-		try {
-			one.withdraw(111111111.333333333);
-		}
-		catch (InsufficientBalanceException ie) {
-			System.out.println(ie.getMessage());
-		}
-		ArrayList<Transaction> oneTransactions = one.getTransactions();
-		for(Transaction trans : oneTransactions) {
-			System.out.println(trans);
-		}
-//		System.out.println(one);
-		
-//		MinusAccount mAccount = new MinusAccount("0001", "one");
-//		mAccount.withdraw(1230.0);
-		
-//		NumberFormat nf = NumberFormat.getNumberInstance();
-//		System.out.println(nf.format(12341234.1234));
-		
+		Test t = new Test();
+		t.start();
+		t.withdrawTest();
+		Account account = t.bank.getAccount("101");
+		System.out.println(account);
 	}
 
 }

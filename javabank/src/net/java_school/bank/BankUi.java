@@ -1,6 +1,7 @@
 package net.java_school.bank;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -85,11 +86,16 @@ public class BankUi {
 		BankUi ui = new BankUi();
 		ui.startWork();
 =======
+=======
+>>>>>>> 145b41f5c4b2cef57daafffc678ee2dbdf9a89b2
 public class BankUi {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
+<<<<<<< HEAD
+>>>>>>> 145b41f5c4b2cef57daafffc678ee2dbdf9a89b2
+=======
 >>>>>>> 145b41f5c4b2cef57daafffc678ee2dbdf9a89b2
 	}
 

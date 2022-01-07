@@ -25,6 +25,7 @@ public class Test extends Thread {
 				account.withdraw(100);
 			}
 			catch (InsufficientBalanceException e) {
+//				System.out.println(e.getMessage());
 			}
 			
 			try {

@@ -34,17 +34,15 @@ public class BankUi {
 		File file = null;
 		FileReader fr = null;
 		BufferedReader br = null;
-<<<<<<< HEAD
 		bank = new MyBank();
-=======
->>>>>>> 9242fb6d0ac0fbe9f724f9adeb43037b46e013f8
+
 		try {
 			file = new File(FILE_DIR + "accounts.txt");
 			fr = new FileReader(file);
 			br = new BufferedReader(fr);
 			String line = null;
 			while((line = br.readLine()) != null) {
-<<<<<<< HEAD
+
 //				System.out.println(line);
 				StringTokenizer st = new StringTokenizer(line, " | ");
 				String accountNo = st.nextToken();
@@ -52,12 +50,6 @@ public class BankUi {
 				Number number = Account.NUMBER_FORMAT.parse(st.nextToken());
 				double balance = number.doubleValue();
 //				System.out.println(balance);
-=======
-				StringTokenizer st = new StringTokenizer(line, " | ");
-				String accountNo = st.nextToken();
-				String name = st.nextToken();
-				double balance = Double.parseDouble(st.nextToken());
->>>>>>> 9242fb6d0ac0fbe9f724f9adeb43037b46e013f8
 				String type = st.nextToken();
 				if(type.equals("regular")) {
 					bank.addAccount(accountNo, name, balance, "+");
@@ -66,21 +58,17 @@ public class BankUi {
 					bank.addAccount(accountNo, name, balance, "-");
 				}
 			}
-<<<<<<< HEAD
-			System.out.println(bank.getTotalAccount());
+//			System.out.println(bank.getTotalAccount());
 			br.close();
 			fr.close();
 			file = file.getParentFile();
 //			System.out.println(file.getName());
-=======
->>>>>>> 9242fb6d0ac0fbe9f724f9adeb43037b46e013f8
 			File[] files = file.listFiles(new FilenameFilter() {
 				public boolean accept(File dir, String name) {
 					return name.toLowerCase().endsWith(".txt");
 				}
 			});
 			for(File f : files) {
-<<<<<<< HEAD
 				String fileName = f.getName();
 //				System.out.println(fileName);
 				if(!fileName.equals("accounts.txt")) {
@@ -91,20 +79,20 @@ public class BankUi {
 						br = new BufferedReader(fr);
 						line = null;
 						while((line = br.readLine()) != null) {
-							System.out.print(accountNo + " | ");
-							System.out.println(line);
+//							System.out.print(accountNo + " | ");
+//							System.out.println(line);
 							StringTokenizer st = new StringTokenizer(line, " | ");
 							String date = st.nextToken();
-							System.out.println(date);
+//							System.out.println(date);
 							String time = st.nextToken();
 							String transactionType = st.nextToken();
 							Number number = Account.NUMBER_FORMAT.parse(st.nextToken());
 							double amount = number.doubleValue();
-							System.out.println(accountNo);
+//							System.out.println(accountNo);
 							Account account = bank.getAccount(accountNo);
-							System.out.println(account);
+//							System.out.println(account);
 							if(account != null) {
-								System.out.print(account);
+//								System.out.print(account);
 								account.addTransaction(date, time, amount, transactionType);
 							}
 						}
@@ -119,34 +107,6 @@ public class BankUi {
 		}
 		catch (Exception e) {
 			this.bank = new MyBank();
-=======
-				String accountNo = f.getName();
-				accountNo.replace(".txt", "");
-				try {
-					fr = new FileReader(f);
-					br = new BufferedReader(fr);
-					line = null;
-					while((line = br.readLine()) != null) {
-						StringTokenizer st = new StringTokenizer(line, " | ");
-						String date = st.nextToken();
-						String time = st.nextToken();
-						String transactionType = st.nextToken();
-						double amount = Double.parseDouble(st.nextToken());
-						Account account = bank.getAccount(accountNo);
-						if(account != null) {
-							account.addTransaction(date, time, amount, transactionType);
-						}
-						
-					}
-				}
-				catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		catch (IOException e) {
-			e.printStackTrace();
->>>>>>> 9242fb6d0ac0fbe9f724f9adeb43037b46e013f8
 		}
 	}
 
@@ -332,12 +292,8 @@ public class BankUi {
 					break;
 				
 				case "q":
-<<<<<<< HEAD
 //					finalize();
 					saveBank(true);
-=======
-					finalize();
->>>>>>> 9242fb6d0ac0fbe9f724f9adeb43037b46e013f8
 					break;
 					
 				default:
@@ -350,11 +306,7 @@ public class BankUi {
 		}while (!menu.equals("q"));
 	}
 	
-<<<<<<< HEAD
 	protected void saveBank() throws IOException {
-=======
-	protected void finalize() throws IOException {
->>>>>>> 9242fb6d0ac0fbe9f724f9adeb43037b46e013f8
 		FileOutputStream fos = null;
 		ObjectOutputStream oos = null;
 		try {
@@ -374,7 +326,6 @@ public class BankUi {
 				e.printStackTrace();
 			}
 		}
-<<<<<<< HEAD
 	}
 	
 	protected void saveBank(boolean textFile) throws IOException {
@@ -424,9 +375,6 @@ public class BankUi {
 				e.printStackTrace();
 			}
 		}
-		
-=======
->>>>>>> 9242fb6d0ac0fbe9f724f9adeb43037b46e013f8
 	}
 
 	public static void main(String[] args) {

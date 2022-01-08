@@ -21,7 +21,10 @@ public class RegularAccount extends Account {
 			e.printStackTrace();
 		}
 		
-		if(amount <= balance) {
+		if(amount < 0.0) {
+			throw new NegativeTransactionAmountException("Negative deposit amount is not valid");
+		}
+		else if(amount <= balance) {
 			addTransaction(amount, WITHDRAW);
 			balance = balance - amount;
 		}

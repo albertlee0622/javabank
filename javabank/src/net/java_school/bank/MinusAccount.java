@@ -15,6 +15,9 @@ public class MinusAccount extends Account{
 	
 	@Override
 	public synchronized void withdraw(double amount) {
+		if(amount < 0.0) {
+			throw new NegativeTransactionAmountException("Negative deposit amount is not valid");
+		}
 		balance -= amount;
 		addTransaction(amount, WITHDRAW);
 	}

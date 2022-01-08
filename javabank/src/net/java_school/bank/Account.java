@@ -60,6 +60,9 @@ public abstract class Account {
 	
 	public void deposit(double amount) {
 		balance = balance + amount;
+		if(amount < 0.0) {
+			throw new NegativeTransactionAmountException("Negative deposit amount is not valid");
+		}
 		addTransaction(amount, DEPOSIT);
 	}
 	

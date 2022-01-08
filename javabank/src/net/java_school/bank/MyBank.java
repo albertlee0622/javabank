@@ -1,8 +1,9 @@
 package net.java_school.bank;
 
 import java.util.*;
+import java.io.Serializable;
 
-public class MyBank implements Bank {
+public class MyBank implements Bank, Serializable {
 	private HashMap<String, Account> accounts;
 	private int totalAccount;
 	

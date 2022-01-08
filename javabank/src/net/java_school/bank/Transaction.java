@@ -1,8 +1,9 @@
 package net.java_school.bank;
 
 import java.text.NumberFormat;
+import java.io.Serializable;
 
-public class Transaction {
+public class Transaction implements Serializable {
 	
 	private String transactionDate;
 	private String transactionTime;

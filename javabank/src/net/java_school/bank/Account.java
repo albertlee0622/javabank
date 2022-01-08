@@ -4,8 +4,9 @@ import java.util.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.text.NumberFormat;
+import java.io.Serializable;
 
-public abstract class Account {
+public abstract class Account implements Serializable {
 	protected String accountNo;
 	protected String name;
 	protected double balance;

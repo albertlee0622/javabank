@@ -1,8 +1,6 @@
 package net.java_school.bank;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 public class BankUi {
@@ -11,7 +9,23 @@ public class BankUi {
 	
 	public BankUi() {
 		super();
-		this.bank = new MyBank();
+		FileInputStream fis = null;
+		ObjectInputStream ois = null;
+		try {
+			fis = new FileInputStream("./bank.ser");
+			ois = new ObjectInputStream(fis);
+			this.bank = (Bank)ois.readObject();
+		}
+		catch (Exception e) {
+			this.bank = new MyBank();
+		}
+		finally {
+			try {
+				ois.close();
+				fis.close();
+			}
+			catch (Exception e) {}
+		}
 	}
 
 	public BankUi(Bank bank) {
@@ -195,6 +209,10 @@ public class BankUi {
 					viewTransaction();
 					break;
 				
+				case "q":
+					finalize();
+					break;
+					
 				default:
 					break;
 				}
@@ -204,11 +222,31 @@ public class BankUi {
 			}
 		}while (!menu.equals("q"));
 	}
-
-	public static void main(String[] args) {
-		BankUi ui = new BankUi(new MyBank());
-		ui.startWork();
-
+	
+	protected void finalize() throws IOException {
+		FileOutputStream fos = null;
+		ObjectOutputStream oos = null;
+		try {
+			fos = new FileOutputStream("./bank.ser");
+			oos = new ObjectOutputStream(fos);
+			oos.writeObject(bank);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				oos.close();
+				fos.close();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
+	public static void main(String[] args) {
+		BankUi ui = new BankUi();
+		ui.startWork();
+	}
 }

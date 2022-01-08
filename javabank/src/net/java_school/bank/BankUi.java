@@ -5,6 +5,7 @@ import java.util.*;
 
 public class BankUi {
 	
+	private static final String FILE_DIR = "./data/"; 
 	private Bank bank;
 	
 	public BankUi() {
@@ -12,7 +13,7 @@ public class BankUi {
 		FileInputStream fis = null;
 		ObjectInputStream ois = null;
 		try {
-			fis = new FileInputStream("./bank.ser");
+			fis = new FileInputStream(FILE_DIR + "bank.ser");
 			ois = new ObjectInputStream(fis);
 			this.bank = (Bank)ois.readObject();
 		}
@@ -25,6 +26,64 @@ public class BankUi {
 				fis.close();
 			}
 			catch (Exception e) {}
+		}
+	}
+	
+	public BankUi(boolean textLoader) {
+		super();
+		File file = null;
+		FileReader fr = null;
+		BufferedReader br = null;
+		try {
+			file = new File(FILE_DIR + "accounts.txt");
+			fr = new FileReader(file);
+			br = new BufferedReader(fr);
+			String line = null;
+			while((line = br.readLine()) != null) {
+				StringTokenizer st = new StringTokenizer(line, " | ");
+				String accountNo = st.nextToken();
+				String name = st.nextToken();
+				double balance = Double.parseDouble(st.nextToken());
+				String type = st.nextToken();
+				if(type.equals("regular")) {
+					bank.addAccount(accountNo, name, balance, "+");
+				}
+				else {
+					bank.addAccount(accountNo, name, balance, "-");
+				}
+			}
+			File[] files = file.listFiles(new FilenameFilter() {
+				public boolean accept(File dir, String name) {
+					return name.toLowerCase().endsWith(".txt");
+				}
+			});
+			for(File f : files) {
+				String accountNo = f.getName();
+				accountNo.replace(".txt", "");
+				try {
+					fr = new FileReader(f);
+					br = new BufferedReader(fr);
+					line = null;
+					while((line = br.readLine()) != null) {
+						StringTokenizer st = new StringTokenizer(line, " | ");
+						String date = st.nextToken();
+						String time = st.nextToken();
+						String transactionType = st.nextToken();
+						double amount = Double.parseDouble(st.nextToken());
+						Account account = bank.getAccount(accountNo);
+						if(account != null) {
+							account.addTransaction(date, time, amount, transactionType);
+						}
+						
+					}
+				}
+				catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -227,7 +286,7 @@ public class BankUi {
 		FileOutputStream fos = null;
 		ObjectOutputStream oos = null;
 		try {
-			fos = new FileOutputStream("./bank.ser");
+			fos = new FileOutputStream(FILE_DIR + "bank.ser");
 			oos = new ObjectOutputStream(fos);
 			oos.writeObject(bank);
 		}
@@ -246,7 +305,7 @@ public class BankUi {
 	}
 
 	public static void main(String[] args) {
-		BankUi ui = new BankUi();
+		BankUi ui = new BankUi(true);
 		ui.startWork();
 	}
 }

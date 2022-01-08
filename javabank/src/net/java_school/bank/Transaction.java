@@ -67,7 +67,6 @@ public class Transaction implements Serializable {
 		s.append(transactionType);
 		s.append(" | ");
 		s.append(NUMBER_FORMAT.format(amount));
-		s.append(" | ");
 		
 		return s.toString();
 	}

@@ -4,8 +4,9 @@ import java.util.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.text.NumberFormat;
+import java.io.Serializable;
 
-public abstract class Account {
+public abstract class Account implements Serializable {
 	protected String accountNo;
 	protected String name;
 	protected double balance;
@@ -68,11 +69,20 @@ public abstract class Account {
 	
 	public abstract void withdraw(double amount);
 	
-	protected void addTransaction(double amount, String transactionType) {
+	public void addTransaction(double amount, String transactionType) {
 		LocalDateTime dateTime = LocalDateTime.now();
 		Transaction newTrans = new Transaction();
 		newTrans.setTransactionDate(DATE_FORMAT.format(dateTime));
 		newTrans.setTransactionTime(TIME_FORMAT.format(dateTime));
+		newTrans.setAmount(amount);
+		newTrans.setTransactionType(transactionType);
+		transactions.add(newTrans);
+	}
+	
+	public void addTransaction(String date, String time, double amount, String transactionType) {
+		Transaction newTrans = new Transaction();
+		newTrans.setTransactionDate(date);
+		newTrans.setTransactionTime(time);
 		newTrans.setAmount(amount);
 		newTrans.setTransactionType(transactionType);
 		transactions.add(newTrans);

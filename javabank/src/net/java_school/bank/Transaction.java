@@ -1,16 +1,15 @@
 package net.java_school.bank;
 
 import java.text.NumberFormat;
+import java.io.Serializable;
 
-public class Transaction {
+public class Transaction implements Serializable {
 	
 	private String transactionDate;
 	private String transactionTime;
 	private double amount;
 	private String transactionType;
 	static final NumberFormat NUMBER_FORMAT = NumberFormat.getNumberInstance();
-	
-	
 	
 	public Transaction() {
 		super();
@@ -66,7 +65,6 @@ public class Transaction {
 		s.append(transactionType);
 		s.append(" | ");
 		s.append(NUMBER_FORMAT.format(amount));
-		s.append(" | ");
 		
 		return s.toString();
 	}

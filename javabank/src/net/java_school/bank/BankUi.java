@@ -1,17 +1,111 @@
 package net.java_school.bank;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 public class BankUi {
 	
+	private static final String FILE_DIR = "./data/"; 
 	private Bank bank;
 	
 	public BankUi() {
 		super();
-		this.bank = new MyBank();
+		FileInputStream fis = null;
+		ObjectInputStream ois = null;
+		try {
+			fis = new FileInputStream(FILE_DIR + "bank.ser");
+			ois = new ObjectInputStream(fis);
+			this.bank = (Bank)ois.readObject();
+		}
+		catch (Exception e) {
+			this.bank = new MyBank();
+		}
+		finally {
+			try {
+				ois.close();
+				fis.close();
+			}
+			catch (Exception e) {}
+		}
+	}
+	
+	public BankUi(boolean textLoader) {
+		super();
+		File file = null;
+		FileReader fr = null;
+		BufferedReader br = null;
+		bank = new MyBank();
+		try {
+			file = new File(FILE_DIR + "accounts.txt");
+			fr = new FileReader(file);
+			br = new BufferedReader(fr);
+			String line = null;
+			while((line = br.readLine()) != null) {
+//				System.out.println(line);
+				StringTokenizer st = new StringTokenizer(line, " | ");
+				String accountNo = st.nextToken();
+				String name = st.nextToken();
+				Number number = Account.NUMBER_FORMAT.parse(st.nextToken());
+				double balance = number.doubleValue();
+//				System.out.println(balance);
+				String type = st.nextToken();
+				if(type.equals("regular")) {
+					bank.addAccount(accountNo, name, balance, "+");
+				}
+				else {
+					bank.addAccount(accountNo, name, balance, "-");
+				}
+			}
+			System.out.println(bank.getTotalAccount());
+			br.close();
+			fr.close();
+			file = file.getParentFile();
+//			System.out.println(file.getName());
+			File[] files = file.listFiles(new FilenameFilter() {
+				public boolean accept(File dir, String name) {
+					return name.toLowerCase().endsWith(".txt");
+				}
+			});
+			for(File f : files) {
+				String fileName = f.getName();
+//				System.out.println(fileName);
+				if(!fileName.equals("accounts.txt")) {
+					String accountNo = fileName.replace(".txt", "");
+//					System.out.println(accountNo);
+					try {
+						fr = new FileReader(f);
+						br = new BufferedReader(fr);
+						line = null;
+						while((line = br.readLine()) != null) {
+							System.out.print(accountNo + " | ");
+							System.out.println(line);
+							StringTokenizer st = new StringTokenizer(line, " | ");
+							String date = st.nextToken();
+							System.out.println(date);
+							String time = st.nextToken();
+							String transactionType = st.nextToken();
+							Number number = Account.NUMBER_FORMAT.parse(st.nextToken());
+							double amount = number.doubleValue();
+							System.out.println(accountNo);
+							Account account = bank.getAccount(accountNo);
+							System.out.println(account);
+							if(account != null) {
+								System.out.print(account);
+								account.addTransaction(date, time, amount, transactionType);
+							}
+						}
+					}
+					catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				br.close();
+				fr.close();
+			}
+		}
+		catch (Exception e) {
+			this.bank = new MyBank();
+		}
 	}
 
 	public BankUi(Bank bank) {
@@ -195,6 +289,11 @@ public class BankUi {
 					viewTransaction();
 					break;
 				
+				case "q":
+//					finalize();
+					saveBank(true);
+					break;
+					
 				default:
 					break;
 				}
@@ -204,11 +303,81 @@ public class BankUi {
 			}
 		}while (!menu.equals("q"));
 	}
-
-	public static void main(String[] args) {
-		BankUi ui = new BankUi(new MyBank());
-		ui.startWork();
-
+	
+	protected void saveBank() throws IOException {
+		FileOutputStream fos = null;
+		ObjectOutputStream oos = null;
+		try {
+			fos = new FileOutputStream(FILE_DIR + "bank.ser");
+			oos = new ObjectOutputStream(fos);
+			oos.writeObject(bank);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				oos.close();
+				fos.close();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	protected void saveBank(boolean textFile) throws IOException {
+		FileWriter fw = null;
+		BufferedWriter bw = null;
+		Map accounts = bank.getAccounts();
+		Iterator iter = accounts.entrySet().iterator();
+		try {
+			fw = new FileWriter(FILE_DIR + "accounts.txt", false);
+			bw = new BufferedWriter(fw);
+			while(iter.hasNext()) {
+				Map.Entry entry = (Map.Entry)iter.next();
+				Account account = (Account)entry.getValue();
+				String accountInfo = account.toString();
+				bw.write(accountInfo, 0, accountInfo.length());
+				bw.newLine();
+			}
+			bw.close();
+			fw.close();
+			
+			iter = accounts.entrySet().iterator();
+			while(iter.hasNext()) {
+				Map.Entry entry = (Map.Entry)iter.next();
+				Account account = (Account)entry.getValue();
+				File file = new File(FILE_DIR + account.getAccountNo() + ".txt");
+				fw = new FileWriter(file, false);
+				bw = new BufferedWriter(fw);
+				List<Transaction> transactions = account.getTransactions();
+				for(Transaction t : transactions) {
+					String transactionInfo = t.toString();
+					bw.write(transactionInfo, 0, transactionInfo.length());
+					bw.newLine();
+				}
+				bw.close();
+				fw.close();
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				bw.close();
+				fw.close();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 
+	public static void main(String[] args) {
+		BankUi ui = new BankUi(true);
+		ui.startWork();
+	}
 }

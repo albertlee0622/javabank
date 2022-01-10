@@ -334,15 +334,15 @@ public class BankUi {
 		Map accounts = bank.getAccounts();
 		Iterator iter = accounts.entrySet().iterator();
 		try {
+			StringBuilder sbAccount = new StringBuilder();
 			fw = new FileWriter(FILE_DIR + "accounts.txt", false);
 			bw = new BufferedWriter(fw);
 			while(iter.hasNext()) {
 				Map.Entry entry = (Map.Entry)iter.next();
-				Account account = (Account)entry.getValue();
-				String accountInfo = account.toString();
-				bw.write(accountInfo, 0, accountInfo.length());
-				bw.newLine();
+				sbAccount.append((Account)entry.getValue());
+				sbAccount.append(System.lineSeparator());
 			}
+			bw.write(sbAccount.toString());
 			bw.close();
 			fw.close();
 			
@@ -354,11 +354,13 @@ public class BankUi {
 				fw = new FileWriter(file, false);
 				bw = new BufferedWriter(fw);
 				List<Transaction> transactions = account.getTransactions();
+				StringBuilder sbTransaction = new StringBuilder();
 				for(Transaction t : transactions) {
-					String transactionInfo = t.toString();
-					bw.write(transactionInfo, 0, transactionInfo.length());
-					bw.newLine();
+					sbTransaction.append(t);
+					sbTransaction.append(System.lineSeparator());
 				}
+				System.out.println(sbTransaction);
+				bw.write(sbTransaction.toString());
 				bw.close();
 				fw.close();
 			}
